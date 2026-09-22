@@ -18,9 +18,10 @@
 }
 
 *{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
+html,body{margin:0;padding:0;height:100%;}
 body{
   min-height:100vh;
+  min-height:100dvh;
   background:
     radial-gradient(ellipse 120% 80% at 50% -10%, #2a2010 0%, transparent 55%),
     radial-gradient(ellipse 100% 60% at 90% 100%, #1c1508 0%, transparent 50%),
@@ -56,7 +57,7 @@ body{
   border-bottom:1px solid rgba(217,174,83,.25);
   background:linear-gradient(180deg, rgba(14,12,9,.9), rgba(14,12,9,.55));
   backdrop-filter:blur(6px);
-  position:sticky; top:0; z-index:20;
+  position:sticky; top:0; z-index:20; flex:0 0 auto;
 }
 .brand{ display:flex; align-items:center; gap:14px; }
 .brand-logo{ height:58px; width:auto; filter:drop-shadow(0 0 10px rgba(217,174,83,.35)); }
@@ -173,20 +174,40 @@ textarea#entriesInput::placeholder{ color:#6b6455; }
 .cta-btn:disabled{ opacity:.4; cursor:not-allowed; filter:grayscale(.3); }
 
 /* ---------------- Wheel Screen ---------------- */
+
+/* Kiosk mode: applied to <body> while the wheel screen is showing on a
+   desktop-width viewport, so the whole draw fits one screen (projector /
+   external display) with zero scrolling. */
+body.wheel-mode{ overflow:hidden; }
+body.wheel-mode .app{
+  height:100vh; height:100dvh;
+  display:flex; flex-direction:column; padding-bottom:0;
+}
+body.wheel-mode main{ flex:1 1 auto; min-height:0; display:flex; overflow:hidden; }
+body.wheel-mode #wheelScreen.active{ flex:1 1 auto; min-height:0; width:100%; display:flex; }
+body.wheel-mode .app-footer{ display:none; }
+
 .wheel-layout{
   display:grid; grid-template-columns:1fr 320px; gap:28px;
   padding:36px 28px 10px; align-items:start;
 }
+body.wheel-mode .wheel-layout{
+  flex:1 1 auto; min-height:0; width:100%;
+  padding:14px 24px;
+}
+
 .wheel-stage{ display:flex; flex-direction:column; align-items:center; }
+body.wheel-mode .wheel-stage{ height:100%; justify-content:center; gap:14px; min-height:0; }
 
 .wheel-remaining{
   font-family:var(--sans); font-size:13px; font-weight:600; letter-spacing:1px;
   color:var(--black); background:linear-gradient(135deg, var(--gold-light), var(--gold));
-  padding:7px 18px; border-radius:999px; margin-bottom:18px;
+  padding:7px 18px; border-radius:999px; margin-bottom:18px; flex:0 0 auto;
 }
+body.wheel-mode .wheel-remaining{ margin-bottom:0; }
 
 .wheel-wrap{
-  position:relative; width:min(560px, 88vw); aspect-ratio:1/1; margin:0 auto;
+  position:relative; width:min(560px, 88vw); aspect-ratio:1/1; margin:0 auto; flex:0 0 auto;
 }
 .wheel-pointer{
   position:absolute; top:-8px; left:50%; transform:translateX(-50%);
@@ -220,17 +241,20 @@ textarea#entriesInput::placeholder{ color:#6b6455; }
 }
 .wheel-hub img{ width:70%; height:70%; object-fit:contain; opacity:.9; }
 
-.spin-btn{ max-width:340px; margin-top:28px; }
+.spin-btn{ max-width:340px; margin-top:28px; flex:0 0 auto; }
+body.wheel-mode .spin-btn{ margin-top:0; }
 .wheel-empty-msg{
   font-family:var(--serif); font-style:italic; font-size:16px; color:var(--gold-light);
-  text-align:center; margin-top:22px; max-width:420px;
+  text-align:center; margin-top:22px; max-width:420px; flex:0 0 auto;
 }
+body.wheel-mode .wheel-empty-msg{ margin-top:0; }
 
 .winners-panel{
   background:linear-gradient(180deg, rgba(22,19,16,.9), rgba(14,12,9,.95));
   border:1px solid rgba(217,174,83,.3); border-radius:var(--radius);
   padding:22px 20px; max-height:78vh; overflow-y:auto; position:sticky; top:100px;
 }
+body.wheel-mode .winners-panel{ height:100%; max-height:100%; align-self:stretch; top:0; }
 .winners-panel h3{ font-family:var(--display); font-weight:400; color:var(--gold-light); font-size:18px; margin:0 0 14px; }
 .winners-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
 .winners-list li{

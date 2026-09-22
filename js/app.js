@@ -99,14 +99,39 @@
 
   function easeOutQuint(t) { return 1 - Math.pow(1 - t, 5); }
 
+  const KIOSK_MIN_WIDTH = 980; // below this, layout stacks and scrolls normally
+
   function showScreen(name) {
     setupScreen.classList.toggle('active', name === 'setup');
     wheelScreen.classList.toggle('active', name === 'wheel');
     navEdit.hidden = name !== 'wheel';
     navReset.hidden = name !== 'wheel';
+    document.body.classList.toggle('wheel-mode', name === 'wheel' && window.innerWidth >= KIOSK_MIN_WIDTH);
     if (name === 'wheel') {
-      requestAnimationFrame(() => { setupWheelCanvasHiDPI(); drawWheel(); });
+      requestAnimationFrame(() => { fitWheelStage(); setupWheelCanvasHiDPI(); drawWheel(); });
     }
+  }
+
+  // Sizes the wheel so the whole draw screen fits one viewport with no
+  // scrolling — critical when the app is projected on an external display.
+  function fitWheelStage() {
+    if (!wheelScreen.classList.contains('active')) return;
+    const stage = document.querySelector('.wheel-stage');
+    const wrap = document.querySelector('.wheel-wrap');
+    if (!stage || !wrap) return;
+
+    const kiosk = document.body.classList.contains('wheel-mode');
+    if (!kiosk) { wrap.style.width = ''; return; }
+
+    const btnEl = spinBtn.hidden ? wheelEmptyMsg : spinBtn;
+    wrap.style.width = '0px'; // collapse before measuring available space
+    const stageRect = stage.getBoundingClientRect();
+    const gap = parseFloat(getComputedStyle(stage).gap) || 0;
+    const fixedHeight = remainingBadge.offsetHeight + (btnEl ? btnEl.offsetHeight : 0) + gap * 2;
+    const availH = stageRect.height - fixedHeight - 8;
+    const availW = stageRect.width - 8;
+    const size = Math.max(180, Math.min(availW, availH, 620));
+    wrap.style.width = `${Math.floor(size)}px`;
   }
 
   // ---------- Setup screen logic ----------
@@ -267,6 +292,8 @@
 
   window.addEventListener('resize', debounce(() => {
     if (wheelScreen.classList.contains('active')) {
+      document.body.classList.toggle('wheel-mode', window.innerWidth >= KIOSK_MIN_WIDTH);
+      fitWheelStage();
       setupWheelCanvasHiDPI();
       drawWheel();
     }
@@ -377,6 +404,7 @@
       state.rotation = 0;
       drawWheel();
     }
+    requestAnimationFrame(() => { fitWheelStage(); setupWheelCanvasHiDPI(); drawWheel(); });
   }
 
   continueBtn.addEventListener('click', confirmWinner);

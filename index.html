@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safarnama — Lucky Draw Wheel</title>
+<meta name="description" content="Safarnama Lucky Draw — a journey that became a story. Add names or numbers and spin the wheel to pick a random winner.">
+<link rel="icon" href="assets/logo.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Great+Vibes&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="stardust" id="stardust"></div>
+
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <img src="assets/logo.webp" alt="Safarnama — A Journey That Became A Story" class="brand-logo">
+    </div>
+    <nav class="topnav">
+      <button id="navEdit" class="nav-btn" hidden>✎ Edit List</button>
+      <button id="navReset" class="nav-btn nav-btn-danger" hidden>⟲ Reset All</button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ===================== SETUP SCREEN ===================== -->
+    <section id="setupScreen" class="screen active">
+      <div class="hero" style="background-image:url('assets/banner.webp')">
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-caption">
+        <p class="eyebrow">✦ The Lucky Draw Wheel ✦</p>
+        <p class="hero-sub">Add up to 355 names or numbers, spin the golden wheel, and let destiny reveal your winners — one dazzling moment at a time.</p>
+      </div>
+
+      <div class="setup-card">
+        <div class="setup-card-head">
+          <h2>Build Your Draw List</h2>
+          <span class="count-badge" id="countBadge">0 / 355</span>
+        </div>
+
+        <textarea id="entriesInput" placeholder="Type one name or number per line&#10;(or separate with commas)&#10;&#10;e.g.&#10;101&#10;102&#10;Rahul Sharma&#10;Priya Verma"></textarea>
+
+        <div class="quick-tools">
+          <div class="quick-range">
+            <label>Quick fill numbers</label>
+            <div class="range-row">
+              <input type="number" id="rangeStart" placeholder="From" min="0" max="99999" value="1">
+              <span class="range-sep">–</span>
+              <input type="number" id="rangeEnd" placeholder="To" min="0" max="99999" value="355">
+              <button id="fillRangeBtn" class="ghost-btn">Fill</button>
+            </div>
+          </div>
+          <div class="quick-actions">
+            <button id="shuffleInputBtn" class="ghost-btn">⤨ Shuffle</button>
+            <button id="clearInputBtn" class="ghost-btn ghost-btn-danger">✕ Clear All</button>
+          </div>
+        </div>
+
+        <p class="hint" id="inputHint">Enter at least 2 entries to start the draw. Maximum 355 entries.</p>
+
+        <button id="startDrawBtn" class="cta-btn" disabled>
+          <span class="cta-icon">★</span> Start Lucky Draw <span class="cta-icon">★</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================== WHEEL SCREEN ===================== -->
+    <section id="wheelScreen" class="screen">
+      <div class="wheel-layout">
+
+        <div class="wheel-stage">
+          <div class="wheel-remaining" id="remainingBadge">355 remaining</div>
+          <div class="wheel-wrap">
+            <div class="wheel-pointer"></div>
+            <div class="wheel-ring"></div>
+            <canvas id="wheelCanvas" width="900" height="900"></canvas>
+            <div class="wheel-hub"><img src="assets/logo.webp" alt=""></div>
+          </div>
+          <button id="spinBtn" class="cta-btn spin-btn">
+            <span class="cta-icon">✦</span> Start Lucky Draw <span class="cta-icon">✦</span>
+          </button>
+          <p class="wheel-empty-msg" id="wheelEmptyMsg" hidden>🎉 All entries have been drawn! Check the winners list, or reset to start a new draw.</p>
+        </div>
+
+        <aside class="winners-panel">
+          <h3>🏆 Winners</h3>
+          <ol id="winnersList" class="winners-list">
+            <li class="winners-empty">No winners yet — spin to begin!</li>
+          </ol>
+        </aside>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">Safarnama · A Journey That Became A Story</footer>
+</div>
+
+<!-- ===================== FULLSCREEN REVEAL ===================== -->
+<div id="revealOverlay" class="reveal-overlay">
+  <canvas id="fxCanvas"></canvas>
+  <div class="reveal-burst"></div>
+  <div class="reveal-content">
+    <p class="reveal-label">✦ The Wheel Has Spoken ✦</p>
+    <div class="reveal-value" id="revealValue">000</div>
+    <button id="continueBtn" class="cta-btn">Continue the Journey →</button>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

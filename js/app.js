@@ -328,7 +328,7 @@
     const extraSpins = 6 + Math.floor(Math.random() * 4);
     const totalDelta = extraSpins * Math.PI * 2 + deltaMod;
     const fromRotation = state.rotation;
-    const duration = 5200 + Math.random() * 900;
+    const duration = 5000 + Math.random() * 5000; // random spin time, 5-10s
     const startTime = performance.now();
 
     function frame(now) {

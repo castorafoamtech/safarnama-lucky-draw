@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const MAX_ENTRIES = 355;
+  const MAX_ENTRIES = 400;
   const STORAGE_KEY = 'safarnama_wheel_state_v1';
 
   const PALETTE = ['#e7c374', '#191410', '#b3862f', '#241d12', '#f2dca0', '#100c08'];
@@ -145,7 +145,7 @@
       inputHint.classList.add('warn');
       startDrawBtn.disabled = true;
     } else if (n < 2) {
-      inputHint.textContent = 'Enter at least 2 entries to start the draw. Maximum 355 entries.';
+      inputHint.textContent = 'Enter at least 2 entries to start the draw. Maximum 400 entries.';
       inputHint.classList.remove('warn');
       startDrawBtn.disabled = true;
     } else {
